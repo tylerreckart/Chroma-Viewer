@@ -103,6 +103,15 @@ class MetalRenderer: NSObject, MTKViewDelegate {
         commandEncoder?.setFragmentBytes(&settings.blueComponent, length: MemoryLayout<Float>.stride, index: 6)
         commandEncoder?.setFragmentBytes(&settings.brightnessMultiplier, length: MemoryLayout<Float>.stride, index: 7)
         commandEncoder?.setFragmentBytes(&settings.animationShapeFactor, length: MemoryLayout<Float>.stride, index: 8)
+        commandEncoder?.setFragmentBytes(&settings.distortionMode, length: MemoryLayout<Bool>.stride, index: 9)
+        commandEncoder?.setFragmentBytes(&settings.distortionRatio, length: MemoryLayout<Float>.stride, index: 10)
+        commandEncoder?.setFragmentBytes(&settings.distortionShape, length: MemoryLayout<Float>.stride, index: 11)
+        commandEncoder?.setFragmentBytes(&settings.distortionFrequencyRelation, length: MemoryLayout<Float>.stride, index: 12)
+        commandEncoder?.setFragmentBytes(&settings.chaosFactor, length: MemoryLayout<Float>.stride, index: 13)
+        commandEncoder?.setFragmentBytes(&settings.perlinMode, length: MemoryLayout<Bool>.stride, index: 14)
+        commandEncoder?.setFragmentBytes(&settings.perlinIntensity, length: MemoryLayout<Float>.stride, index: 15)
+        commandEncoder?.setFragmentBytes(&settings.perlinScale, length: MemoryLayout<Float>.stride, index: 16)
+        commandEncoder?.setFragmentBytes(&settings.perlinFrequency, length: MemoryLayout<Float>.stride, index: 17)
 
         // Draw a full-screen quad
         commandEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
@@ -111,6 +120,7 @@ class MetalRenderer: NSObject, MTKViewDelegate {
         commandBuffer?.present(drawable)
         commandBuffer?.commit()
     }
+
 }
 
 struct MetalViewRepresentable: UIViewRepresentable {

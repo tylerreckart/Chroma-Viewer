@@ -33,6 +33,19 @@ class VisualizerSettings: ObservableObject {
 
     // Control the shape of the gradient animation
     @Published var animationShapeFactor: Float = 1.0
+    
+    // Distortion controls
+    @Published var distortionMode: Bool = false
+    @Published var distortionRatio: Float = 0.5
+    @Published var distortionShape: Float = 1.0
+    @Published var distortionFrequencyRelation: Float = 0.5
+    @Published var chaosFactor: Float = 0.5
+    
+    // Perlin noise controls
+    @Published var perlinMode: Bool = false
+    @Published var perlinIntensity: Float = 0.5
+    @Published var perlinScale: Float = 1.0
+    @Published var perlinFrequency: Float = 1.0
 
     private var cancellables = Set<AnyCancellable>()
 
