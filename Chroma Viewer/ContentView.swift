@@ -36,8 +36,14 @@ struct ContentView: View {
                     ScrollView  {
                         Text("Gradient Controls").font(.headline)
                         HStack {
-                            Text("Brightness Multiplier")
-                            Slider(value: $settings.brightnessMultiplier, in: 0.1...5.0)
+                            Text("Amplitude Sensitivity")
+                            Slider(value: $settings.amplitudeSensitivity, in: 1.0...5.0)
+                                .padding()
+                        }
+                        
+                        HStack {
+                            Text("Pitch Sensitivity")
+                            Slider(value: $settings.pitchSensitivity, in: 1.0...5.0)
                                 .padding()
                         }
 
@@ -49,7 +55,7 @@ struct ContentView: View {
 
                         HStack {
                             Text("Animation Shape Factor")
-                            Slider(value: $settings.animationShapeFactor, in: 0.5...3.0, step: 0.1)
+                            Slider(value: $settings.animationShapeFactor, in: 1.0...5.0, step: 0.1)
                                 .padding()
                         }
                         

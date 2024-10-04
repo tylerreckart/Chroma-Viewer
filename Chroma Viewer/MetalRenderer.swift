@@ -89,7 +89,7 @@ class MetalRenderer: NSObject, MTKViewDelegate {
         let scaledPitch = settings.pitch * settings.pitchSensitivity
 
         // Set up evolving gradient parameters based on settings
-        var brightness = scaledAmplitude * settings.brightnessMultiplier
+        var brightness = settings.brightnessMultiplier
         let colorShift = sin(settings.time * settings.colorShiftSpeed + scaledPitch * 0.01) * 0.5 + 0.5
         var gradientColor = SIMD4<Float>(colorShift, 1.0 - colorShift, brightness, 1.0)
 
