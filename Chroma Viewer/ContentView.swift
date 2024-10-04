@@ -37,13 +37,13 @@ struct ContentView: View {
                         Text("Gradient Controls").font(.headline)
                         HStack {
                             Text("Amplitude Sensitivity")
-                            Slider(value: $settings.amplitudeSensitivity, in: 1.0...5.0)
+                            Slider(value: $settings.amplitudeSensitivity, in: 0.1...1.0)
                                 .padding()
                         }
                         
                         HStack {
-                            Text("Pitch Sensitivity")
-                            Slider(value: $settings.pitchSensitivity, in: 1.0...5.0)
+                            Text("Frequency Sensitivity")
+                            Slider(value: $settings.pitchSensitivity, in: 0.1...1.0)
                                 .padding()
                         }
 
@@ -55,7 +55,7 @@ struct ContentView: View {
 
                         HStack {
                             Text("Animation Shape Factor")
-                            Slider(value: $settings.animationShapeFactor, in: 1.0...5.0, step: 0.1)
+                            Slider(value: $settings.animationShapeFactor, in: 0.5...3.0, step: 0.1)
                                 .padding()
                         }
                         
@@ -99,33 +99,30 @@ struct ContentView: View {
 
                     // Distortion Controls
                     VStack {
-                        Text("Distortion Controls").font(.headline)
-                        Toggle("Enable Distortion", isOn: $settings.distortionMode)
+                        Text("Glitch Effect Controls").font(.headline)
+                        Toggle("Enable Glitch Effect", isOn: $settings.glitchMode)
                             .padding()
+                            .onChange(of: settings.glitchMode) { newValue in
+                                renderer.update(amplitude: audioManager.amplitude, pitch: audioManager.pitch)  // Trigger renderer to refresh when glitch mode changes
+                            }
 
-                        if settings.distortionMode {
+                        if settings.glitchMode {
                             HStack {
-                                Text("Distortion Ratio")
-                                Slider(value: $settings.distortionRatio, in: 0.0...1.0)
+                                Text("Glitch Frequency")
+                                Slider(value: $settings.glitchFrequency, in: 0.1...5.0, step: 0.1)
                                     .padding()
+                                    .onChange(of: settings.glitchFrequency) { newValue in
+                                        renderer.update(amplitude: audioManager.amplitude, pitch: audioManager.pitch)  // Trigger renderer to refresh when glitch frequency changes
+                                    }
                             }
 
                             HStack {
-                                Text("Distortion Shape")
-                                Slider(value: $settings.distortionShape, in: 0.1...3.0)
+                                Text("Glitch Size")
+                                Slider(value: $settings.glitchSize, in: 0.01...0.5, step: 0.01)
                                     .padding()
-                            }
-
-                            HStack {
-                                Text("Distortion Frequency Relation")
-                                Slider(value: $settings.distortionFrequencyRelation, in: 0.1...2.0)
-                                    .padding()
-                            }
-
-                            HStack {
-                                Text("Chaos Factor")
-                                Slider(value: $settings.chaosFactor, in: 0.0...1.0)
-                                    .padding()
+                                    .onChange(of: settings.glitchSize) { newValue in
+                                        renderer.update(amplitude: audioManager.amplitude, pitch: audioManager.pitch)  // Trigger renderer to refresh when glitch size changes
+                                    }
                             }
                         }
                     }
@@ -189,13 +186,13 @@ struct ContentView: View {
 
                         HStack {
                             Text("Warp Intensity")
-                            Slider(value: $settings.warpIntensity, in: 0.1...1.0)
+                            Slider(value: $settings.warpIntensity, in: 0.1...2.0)
                                 .padding()
                         }
 
                         HStack {
                             Text("Twist Intensity")
-                            Slider(value: $settings.twistIntensity, in: 0.0...1.0)
+                            Slider(value: $settings.twistIntensity, in: 0.0...10.0)
                                 .padding()
                         }
                     }

@@ -85,13 +85,12 @@ class MetalRenderer: NSObject, MTKViewDelegate {
         }
 
         // Apply amplitude and pitch sensitivity
-        let scaledAmplitude = settings.amplitude * settings.amplitudeSensitivity
-        let scaledPitch = settings.pitch * settings.pitchSensitivity
+        var scaledAmplitude = settings.amplitude * settings.amplitudeSensitivity
+        var scaledPitch = settings.pitch * settings.pitchSensitivity
 
         // Set up evolving gradient parameters based on settings
-        var brightness = settings.brightnessMultiplier
-        let colorShift = sin(settings.time * settings.colorShiftSpeed + scaledPitch * 0.01) * 0.5 + 0.5
-        var gradientColor = SIMD4<Float>(colorShift, 1.0 - colorShift, brightness, 1.0)
+        let brightness = max(0.2, settings.brightnessMultiplier) // Keep brightness above a base level
+        var gradientColor = SIMD4<Float>(scaledAmplitude, 1.0 - scaledAmplitude, brightness, 1.0)
 
         // Pass updated parameters to the fragment shader
         commandEncoder?.setFragmentBytes(&gradientColor, length: MemoryLayout<SIMD4<Float>>.stride, index: 0)
@@ -103,22 +102,26 @@ class MetalRenderer: NSObject, MTKViewDelegate {
         commandEncoder?.setFragmentBytes(&settings.blueComponent, length: MemoryLayout<Float>.stride, index: 6)
         commandEncoder?.setFragmentBytes(&settings.brightnessMultiplier, length: MemoryLayout<Float>.stride, index: 7)
         commandEncoder?.setFragmentBytes(&settings.animationShapeFactor, length: MemoryLayout<Float>.stride, index: 8)
-        commandEncoder?.setFragmentBytes(&settings.distortionMode, length: MemoryLayout<Bool>.stride, index: 9)
-        commandEncoder?.setFragmentBytes(&settings.distortionRatio, length: MemoryLayout<Float>.stride, index: 10)
-        commandEncoder?.setFragmentBytes(&settings.distortionShape, length: MemoryLayout<Float>.stride, index: 11)
-        commandEncoder?.setFragmentBytes(&settings.distortionFrequencyRelation, length: MemoryLayout<Float>.stride, index: 12)
-        commandEncoder?.setFragmentBytes(&settings.chaosFactor, length: MemoryLayout<Float>.stride, index: 13)
-        commandEncoder?.setFragmentBytes(&settings.perlinMode, length: MemoryLayout<Bool>.stride, index: 14)
-        commandEncoder?.setFragmentBytes(&settings.perlinIntensity, length: MemoryLayout<Float>.stride, index: 15)
-        commandEncoder?.setFragmentBytes(&settings.perlinScale, length: MemoryLayout<Float>.stride, index: 16)
-        commandEncoder?.setFragmentBytes(&settings.perlinFrequency, length: MemoryLayout<Float>.stride, index: 17)
-        commandEncoder?.setFragmentBytes(&settings.kaleidoscopeMode, length: MemoryLayout<Bool>.stride, index: 18)
-        commandEncoder?.setFragmentBytes(&settings.kaleidoscopeSegments, length: MemoryLayout<Int>.stride, index: 19)
-        commandEncoder?.setFragmentBytes(&settings.warpIntensity, length: MemoryLayout<Float>.stride, index: 20)
-        commandEncoder?.setFragmentBytes(&settings.twistIntensity, length: MemoryLayout<Float>.stride, index: 21)
-        // Assign blend mode to a local mutable variable before passing to the shader
+        commandEncoder?.setFragmentBytes(&scaledAmplitude, length: MemoryLayout<Float>.stride, index: 9)
+        commandEncoder?.setFragmentBytes(&scaledPitch, length: MemoryLayout<Float>.stride, index: 10)
+        commandEncoder?.setFragmentBytes(&settings.distortionMode, length: MemoryLayout<Bool>.stride, index: 11)
+        commandEncoder?.setFragmentBytes(&settings.distortionRatio, length: MemoryLayout<Float>.stride, index: 12)
+        commandEncoder?.setFragmentBytes(&settings.distortionShape, length: MemoryLayout<Float>.stride, index: 13)
+        commandEncoder?.setFragmentBytes(&settings.distortionFrequencyRelation, length: MemoryLayout<Float>.stride, index: 14)
+        commandEncoder?.setFragmentBytes(&settings.chaosFactor, length: MemoryLayout<Float>.stride, index: 15)
+        commandEncoder?.setFragmentBytes(&settings.perlinMode, length: MemoryLayout<Bool>.stride, index: 16)
+        commandEncoder?.setFragmentBytes(&settings.perlinIntensity, length: MemoryLayout<Float>.stride, index: 17)
+        commandEncoder?.setFragmentBytes(&settings.perlinScale, length: MemoryLayout<Float>.stride, index: 18)
+        commandEncoder?.setFragmentBytes(&settings.perlinFrequency, length: MemoryLayout<Float>.stride, index: 19)
+        commandEncoder?.setFragmentBytes(&settings.kaleidoscopeMode, length: MemoryLayout<Bool>.stride, index: 20)
+        commandEncoder?.setFragmentBytes(&settings.kaleidoscopeSegments, length: MemoryLayout<Int>.stride, index: 21)
+        commandEncoder?.setFragmentBytes(&settings.warpIntensity, length: MemoryLayout<Float>.stride, index: 22)
+        commandEncoder?.setFragmentBytes(&settings.twistIntensity, length: MemoryLayout<Float>.stride, index: 23)
         var perlinBlendModeRawValue = settings.perlinBlendMode.rawValue
-        commandEncoder?.setFragmentBytes(&perlinBlendModeRawValue, length: MemoryLayout<Int>.stride, index: 22)
+        commandEncoder?.setFragmentBytes(&perlinBlendModeRawValue, length: MemoryLayout<Int>.stride, index: 24)
+        commandEncoder?.setFragmentBytes(&settings.glitchMode, length: MemoryLayout<Bool>.stride, index: 25)
+        commandEncoder?.setFragmentBytes(&settings.glitchFrequency, length: MemoryLayout<Float>.stride, index: 26)
+        commandEncoder?.setFragmentBytes(&settings.glitchSize, length: MemoryLayout<Float>.stride, index: 27)
 
         // Draw a full-screen quad
         commandEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)

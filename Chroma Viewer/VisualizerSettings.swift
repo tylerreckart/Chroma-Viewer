@@ -8,6 +8,12 @@
 import Foundation
 import Combine
 
+enum ShapeMode: Int {
+    case kaleidoscope = 0
+    case rectangleWarp
+    case hexagonWarp
+}
+
 class VisualizerSettings: ObservableObject {
     @Published var brightnessMultiplier: Float = 1.2
     @Published var colorShiftSpeed: Float = 0.2
@@ -53,6 +59,12 @@ class VisualizerSettings: ObservableObject {
     @Published var kaleidoscopeSegments: Int = 6
     @Published var warpIntensity: Float = 0.5
     @Published var twistIntensity: Float = 0.5
+    @Published var shapeMode: ShapeMode = .kaleidoscope
+    
+    // Glitch controls
+    @Published var glitchMode: Bool = false
+    @Published var glitchFrequency: Float = 1.0  // Controls the frequency of glitches
+    @Published var glitchSize: Float = 0.1       // Controls the size of the glitches
 
     private var cancellables = Set<AnyCancellable>()
 
