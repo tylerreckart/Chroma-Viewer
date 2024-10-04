@@ -112,6 +112,13 @@ class MetalRenderer: NSObject, MTKViewDelegate {
         commandEncoder?.setFragmentBytes(&settings.perlinIntensity, length: MemoryLayout<Float>.stride, index: 15)
         commandEncoder?.setFragmentBytes(&settings.perlinScale, length: MemoryLayout<Float>.stride, index: 16)
         commandEncoder?.setFragmentBytes(&settings.perlinFrequency, length: MemoryLayout<Float>.stride, index: 17)
+        commandEncoder?.setFragmentBytes(&settings.kaleidoscopeMode, length: MemoryLayout<Bool>.stride, index: 18)
+        commandEncoder?.setFragmentBytes(&settings.kaleidoscopeSegments, length: MemoryLayout<Int>.stride, index: 19)
+        commandEncoder?.setFragmentBytes(&settings.warpIntensity, length: MemoryLayout<Float>.stride, index: 20)
+        commandEncoder?.setFragmentBytes(&settings.twistIntensity, length: MemoryLayout<Float>.stride, index: 21)
+        // Assign blend mode to a local mutable variable before passing to the shader
+        var perlinBlendModeRawValue = settings.perlinBlendMode.rawValue
+        commandEncoder?.setFragmentBytes(&perlinBlendModeRawValue, length: MemoryLayout<Int>.stride, index: 22)
 
         // Draw a full-screen quad
         commandEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)

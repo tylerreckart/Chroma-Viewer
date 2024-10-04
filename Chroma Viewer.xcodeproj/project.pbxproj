@@ -11,11 +11,12 @@
 		DBE585BA2CAF7E48006C2EFE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE585B92CAF7E48006C2EFE /* ContentView.swift */; };
 		DBE585BC2CAF7E4A006C2EFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBE585BB2CAF7E4A006C2EFE /* Assets.xcassets */; };
 		DBE585BF2CAF7E4A006C2EFE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBE585BE2CAF7E4A006C2EFE /* Preview Assets.xcassets */; };
-		DBE585C82CAF8356006C2EFE /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = DBE585C72CAF8356006C2EFE /* Shaders.metal */; };
+		DBE585C82CAF8356006C2EFE /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = DBE585C72CAF8356006C2EFE /* Shader.metal */; };
 		DBE585CA2CB04D77006C2EFE /* VisualizerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE585C92CB04D77006C2EFE /* VisualizerType.swift */; };
 		DBE585CC2CB04D82006C2EFE /* VisualizerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE585CB2CB04D82006C2EFE /* VisualizerSettings.swift */; };
 		DBE585CE2CB04DAE006C2EFE /* AudioInputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE585CD2CB04DAE006C2EFE /* AudioInputManager.swift */; };
 		DBE585D02CB04DDD006C2EFE /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE585CF2CB04DDD006C2EFE /* MetalRenderer.swift */; };
+		DBE585D22CB06C63006C2EFE /* BlendMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE585D12CB06C63006C2EFE /* BlendMode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,11 +27,12 @@
 		DBE585BE2CAF7E4A006C2EFE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DBE585C52CAF804A006C2EFE /* Chroma Viewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Chroma Viewer.entitlements"; sourceTree = "<group>"; };
 		DBE585C62CAF8081006C2EFE /* Chroma-Viewer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Chroma-Viewer-Info.plist"; sourceTree = SOURCE_ROOT; };
-		DBE585C72CAF8356006C2EFE /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		DBE585C72CAF8356006C2EFE /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
 		DBE585C92CB04D77006C2EFE /* VisualizerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerType.swift; sourceTree = "<group>"; };
 		DBE585CB2CB04D82006C2EFE /* VisualizerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerSettings.swift; sourceTree = "<group>"; };
 		DBE585CD2CB04DAE006C2EFE /* AudioInputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInputManager.swift; sourceTree = "<group>"; };
 		DBE585CF2CB04DDD006C2EFE /* MetalRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderer.swift; sourceTree = "<group>"; };
+		DBE585D12CB06C63006C2EFE /* BlendMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlendMode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,11 +69,12 @@
 				DBE585C52CAF804A006C2EFE /* Chroma Viewer.entitlements */,
 				DBE585B72CAF7E48006C2EFE /* Chroma_ViewerApp.swift */,
 				DBE585C92CB04D77006C2EFE /* VisualizerType.swift */,
+				DBE585D12CB06C63006C2EFE /* BlendMode.swift */,
 				DBE585CD2CB04DAE006C2EFE /* AudioInputManager.swift */,
 				DBE585B92CAF7E48006C2EFE /* ContentView.swift */,
 				DBE585CF2CB04DDD006C2EFE /* MetalRenderer.swift */,
 				DBE585CB2CB04D82006C2EFE /* VisualizerSettings.swift */,
-				DBE585C72CAF8356006C2EFE /* Shaders.metal */,
+				DBE585C72CAF8356006C2EFE /* Shader.metal */,
 				DBE585BB2CAF7E4A006C2EFE /* Assets.xcassets */,
 				DBE585BD2CAF7E4A006C2EFE /* Preview Content */,
 			);
@@ -157,9 +160,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBE585CC2CB04D82006C2EFE /* VisualizerSettings.swift in Sources */,
-				DBE585C82CAF8356006C2EFE /* Shaders.metal in Sources */,
+				DBE585C82CAF8356006C2EFE /* Shader.metal in Sources */,
 				DBE585D02CB04DDD006C2EFE /* MetalRenderer.swift in Sources */,
 				DBE585BA2CAF7E48006C2EFE /* ContentView.swift in Sources */,
+				DBE585D22CB06C63006C2EFE /* BlendMode.swift in Sources */,
 				DBE585B82CAF7E48006C2EFE /* Chroma_ViewerApp.swift in Sources */,
 				DBE585CA2CB04D77006C2EFE /* VisualizerType.swift in Sources */,
 				DBE585CE2CB04DAE006C2EFE /* AudioInputManager.swift in Sources */,

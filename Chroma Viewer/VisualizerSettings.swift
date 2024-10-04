@@ -46,6 +46,13 @@ class VisualizerSettings: ObservableObject {
     @Published var perlinIntensity: Float = 0.5
     @Published var perlinScale: Float = 1.0
     @Published var perlinFrequency: Float = 1.0
+    @Published var perlinBlendMode: BlendMode = .overlay
+    
+    // Kaleidoscope and Warp controls
+    @Published var kaleidoscopeMode: Bool = false
+    @Published var kaleidoscopeSegments: Int = 6
+    @Published var warpIntensity: Float = 0.5
+    @Published var twistIntensity: Float = 0.5
 
     private var cancellables = Set<AnyCancellable>()
 
