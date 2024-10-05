@@ -71,7 +71,7 @@ class MetalRenderer: NSObject, MTKViewDelegate {
         guard let drawable = view.currentDrawable, let descriptor = view.currentRenderPassDescriptor else { return }
 
         // Update the time for animation
-        settings.time += settings.timeIncrement
+        settings.time += settings.timeIncrement * 0.05
 
         let commandBuffer = commandQueue.makeCommandBuffer()
         let commandEncoder = commandBuffer?.makeRenderCommandEncoder(descriptor: descriptor)
@@ -122,9 +122,10 @@ class MetalRenderer: NSObject, MTKViewDelegate {
         commandEncoder?.setFragmentBytes(&settings.glitchMode, length: MemoryLayout<Bool>.stride, index: 25)
         commandEncoder?.setFragmentBytes(&settings.glitchFrequency, length: MemoryLayout<Float>.stride, index: 26)
         commandEncoder?.setFragmentBytes(&settings.glitchSize, length: MemoryLayout<Float>.stride, index: 27)
+        commandEncoder?.setFragmentBytes(&settings.colorShiftSpeed, length: MemoryLayout<Float>.stride, index: 28)
 
         // Draw a full-screen quad
-        commandEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
+        commandEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: Int(6 * settings.animationShapeFactor))
 
         commandEncoder?.endEncoding()
         commandBuffer?.present(drawable)

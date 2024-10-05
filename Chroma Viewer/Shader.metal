@@ -79,7 +79,7 @@ float3 blendColorBurn(float3 base, float3 blend) {
     return 1.0 - (1.0 - base) / (blend + 0.001);
 }
 
-// Fragment function for fluid-like gradient effect with optional distortion, Perlin noise, glitch, kaleidoscopic warp
+// Fragment function for fluid-like gradient effect with optional distortion, noise noise, glitch, kaleidoscopic warp
 fragment float4 fragment_main(VertexOut in [[stage_in]],
                               constant float4 &gradientColor [[buffer(0)]],
                               constant float &time [[buffer(1)]],
@@ -97,18 +97,19 @@ fragment float4 fragment_main(VertexOut in [[stage_in]],
                               constant float &distortionShape [[buffer(13)]],
                               constant float &distortionFrequencyRelation [[buffer(14)]],
                               constant float &chaosFactor [[buffer(15)]],
-                              constant bool &perlinMode [[buffer(16)]],
-                              constant float &perlinIntensity [[buffer(17)]],
-                              constant float &perlinScale [[buffer(18)]],
-                              constant float &perlinFrequency [[buffer(19)]],
+                              constant bool &noiseMode [[buffer(16)]],
+                              constant float &noiseIntensity [[buffer(17)]],
+                              constant float &noiseScale [[buffer(18)]],
+                              constant float &noiseFrequency [[buffer(19)]],
                               constant bool &kaleidoscopeMode [[buffer(20)]],
                               constant int &kaleidoscopeSegments [[buffer(21)]],
                               constant float &warpIntensity [[buffer(22)]],
                               constant float &twistIntensity [[buffer(23)]],
-                              constant int &perlinBlendMode [[buffer(24)]],
+                              constant int &noiseBlendMode [[buffer(24)]],
                               constant bool &glitchMode [[buffer(25)]],
                               constant float &glitchFrequency [[buffer(26)]],
-                              constant float &glitchSize [[buffer(27)]]) {
+                              constant float &glitchSize [[buffer(27)]],
+                              constant float &colorShiftSpeed [[buffer(28)]]) {
 
     float2 coord = in.coord;
 
@@ -120,40 +121,37 @@ fragment float4 fragment_main(VertexOut in [[stage_in]],
         coord += float2(glitchX, glitchY) * 0.05; // Reduce glitch intensity by using a small factor
         coord = clamp(coord, 0.0, 1.0);
     }
-
-    // Apply kaleidoscope effect if enabled
+    
     if (kaleidoscopeMode) {
         coord = kaleidoscope(coord, kaleidoscopeSegments);
+        // Apply twisting and warping, influenced by amplitude and pitch
     }
-
-    // Apply twisting and warping, influenced by amplitude and pitch
-    float angle = atan2(coord.y - 0.5, coord.x - 0.5) + twistIntensity * warpIntensity * sin(time + pitch * 0.01);
+    float angle = atan2(coord.y - 0.5, coord.x - 0.5) + (kaleidoscopeMode ? twistIntensity * warpIntensity : 0) * sin(time + pitch * 0.01);
     float radius = length(coord - float2(0.5, 0.5));
-    radius += amplitude * animationShapeFactor * 0.05; // Scale radius by amplitude to make visuals react to sound
+    radius += amplitude * animationShapeFactor * 5; // Scale radius by amplitude to make visuals react to sound
     coord = float2(cos(angle) * radius + 0.5, sin(angle) * radius + 0.5);
-
     coord = clamp(coord, 0.0, 1.0); // Ensure coordinates stay within bounds
 
     // Smoothly blend hue based on time, coordinates, and pitch
-    float baseHue = sin(time * 0.3 + coord.x * 4.0 + coord.y * 4.0 + pitch * 0.05) * 0.5 + 0.5 + baseHueOffset;
+    float baseHue = sin(time * 2.0 + coord.x * 4.0 + coord.y * 4.0 + pitch * 5) * 0.5 + (0.5 + baseHueOffset) * colorShiftSpeed;
     baseHue = fract(baseHue); // Keep hue value between 0.0 and 1.0
 
     // Calculate base color using smooth gradient interpolation
-    float3 color1 = float3(1.0, 1.0, 0.2); // Warm color
-    float3 color2 = float3(0.2, 0.5, 1.0); // Cool color
-    float3 baseColor = mix(color1, color2, baseHue);
+    float3 color1 = float3(redComponent * 0.9, greenComponent * 0.5, blueComponent * 0.2); // Warm color
+    float3 color2 = float3(redComponent * 0.2, greenComponent * 0.5, blueComponent * 0.9); // Cool color
+    float3 baseColor = mix(color1, color2, baseHue * (colorMixFactor * 2.0));
 
     // Apply brightness adjustments using amplitude
     baseColor *= (brightnessMultiplier + amplitude * 0.5); // Increase brightness scaling by amplitude for greater reactivity
 
-    // Apply Perlin noise if enabled
-    if (perlinMode) {
-        float noiseValue = random(coord * perlinScale + time * perlinFrequency);
+    // Apply noise if enabled
+    if (noiseMode) {
+        float noiseValue = random(coord * noiseScale + time * noiseFrequency);
         noiseValue = noiseValue * 0.5 + 0.5; // Normalize noise to [0, 1] range
-        float3 noiseColor = float3(noiseValue) * perlinIntensity;
+        float3 noiseColor = float3(noiseValue) * noiseIntensity;
 
         // Blend based on the selected mode
-        switch (perlinBlendMode) {
+        switch (noiseBlendMode) {
             case 0: // Normal
                 baseColor += noiseColor;
                 break;

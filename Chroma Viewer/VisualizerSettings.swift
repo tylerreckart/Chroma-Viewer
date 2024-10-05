@@ -17,14 +17,14 @@ enum ShapeMode: Int {
 class VisualizerSettings: ObservableObject {
     @Published var brightnessMultiplier: Float = 1.2
     @Published var colorShiftSpeed: Float = 0.2
-    @Published var timeIncrement: Float = 0.01
+    @Published var timeIncrement: Float = 0.001
     @Published var colorMixFactor: Float = 0.5 // Control how colors are mixed
     @Published var baseHueOffset: Float = 0.1 // Control the color offset for harmonious color schemes
 
     // Individual color components for controlling the visual appearance
     @Published var redComponent: Float = 1.0
-    @Published var greenComponent: Float = 0.5
-    @Published var blueComponent: Float = 0.2
+    @Published var greenComponent: Float = 1.0
+    @Published var blueComponent: Float = 1.0
 
     // Amplitude and pitch to control brightness and color dynamics
     @Published var amplitude: Float = 0.0
